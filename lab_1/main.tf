@@ -36,6 +36,7 @@ resource "google_compute_instance" "gce" {
     }
   }
   network_interface {
+
     network    = google_compute_network.tf_vpc.id
     subnetwork = google_compute_subnetwork.tf_subnet.id
 

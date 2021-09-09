@@ -1,5 +1,5 @@
 provider "google" {
-  project = "premvc-20210523"
+  project = "tf-lab-life"
 }
 
 data "google_compute_image" "my_image" {

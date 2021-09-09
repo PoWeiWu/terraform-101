@@ -1,6 +1,6 @@
 variable "project_id" {
   description = "GCP project ID"
-  default     = "premvc-20210523"
+  default     = "tf-lab-life"
 }
 
 variable "region" {
@@ -15,15 +15,17 @@ variable "vpc_id" {
 
 variable "subnet_id" {
   description = "This is subnet name"
-  default     = "tf-vpc"
+  default     = "tf-subnet"
 }
 
 variable "subnet_cidr" {
   description = "subnet CIDR range"
+  default     = "10.100.2.0/24"
 }
 
 variable "instance_name" {
   description = "GCE instance name"
+  default     = "my-vm"
 }
 
 variable "machine_type" {
