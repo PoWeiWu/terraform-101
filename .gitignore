@@ -1,3 +1,6 @@
+#gcp service account token
+_credential
+
 .terraform.lock.hcl
 
 # Local .terraform directories

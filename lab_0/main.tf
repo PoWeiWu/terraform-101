@@ -1,5 +1,6 @@
 provider "google" {
-  project = "tf-lab-life"
+  credentials = file("../_credential/google.json")
+  project     = "tf-lab-life"
 }
 
 data "google_compute_image" "my_image" {
@@ -36,7 +37,7 @@ resource "google_compute_instance" "gce" {
 
   boot_disk {
     initialize_params {
-      # image = "debian-cloud/debian-9"
+      # image = "rhel-cloud/rhel-7"
       image = data.google_compute_image.my_image.self_link
     }
   }

@@ -32,7 +32,7 @@ resource "google_compute_instance" "gce" {
 
   boot_disk {
     initialize_params {
-      image = data.google_compute_image.my_image.self_link
+      image = var.instace_image
     }
   }
   network_interface {
@@ -44,5 +44,4 @@ resource "google_compute_instance" "gce" {
       // Ephemeral public IP
     }
   }
-
 }

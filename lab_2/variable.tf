@@ -32,3 +32,8 @@ variable "machine_type" {
   description = "GCE machine type"
   default     = "e2-medium"
 }
+
+variable "instace_image" {
+  description = "GCE image"
+  default     = "debian-cloud/debian-9"
+}
