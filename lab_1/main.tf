@@ -1,3 +1,8 @@
+provider "google" {
+  credentials = file("../_credential/google.json")
+  project     = "tf-lab-life"
+}
+
 data "google_compute_image" "my_image" {
   family  = "rhel-7"
   project = "rhel-cloud"
@@ -5,16 +10,16 @@ data "google_compute_image" "my_image" {
 
 #create gcp vpc network
 resource "google_compute_network" "tf_vpc" {
-  name                    = var.vpc_id
+  name                    = "tf-vpc"
   auto_create_subnetworks = false
   routing_mode            = "REGIONAL"
 }
 
 #create a subnetwork at asia-east1 and base on tf-vpc
 resource "google_compute_subnetwork" "tf_subnet" {
-  name          = var.subnet_id
+  name          = "tf-subnet"
   ip_cidr_range = "10.10.1.0/24"
-  region        = var.region
+  region        = "asia-east1"
   network       = google_compute_network.tf_vpc.name
 
   log_config {
@@ -24,19 +29,42 @@ resource "google_compute_subnetwork" "tf_subnet" {
   }
 }
 
+resource "google_compute_firewall" "ping" {
+  name    = "ping"
+  network = google_compute_network.tf_vpc.id
+
+  allow {
+    protocol = "icmp"
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "ssh" {
+  name    = "allow-ssh"
+  network = google_compute_network.tf_vpc.id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["ssh"]
+}
 #create a gce vm
 resource "google_compute_instance" "gce" {
-  name         = var.instance_name
-  machine_type = var.machine_type
+  name         = "my-vm"
+  machine_type = "e2-medium"
   zone         = "asia-east1-a"
 
   boot_disk {
     initialize_params {
+      # image = "rhel-cloud/rhel-7"
       image = data.google_compute_image.my_image.self_link
     }
   }
   network_interface {
-
     network    = google_compute_network.tf_vpc.id
     subnetwork = google_compute_subnetwork.tf_subnet.id
 
@@ -45,4 +73,10 @@ resource "google_compute_instance" "gce" {
     }
   }
 
+  tags = [ "ssh" ]
+
+}
+
+output "public_ip" {
+  value = google_compute_instance.gce.network_interface[0].access_config[0].nat_ip
 }

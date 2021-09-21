@@ -35,5 +35,5 @@ variable "machine_type" {
 
 variable "instace_image" {
   description = "GCE image"
-  default     = "debian-cloud/debian-9"
+  default     = "rhel-cloud/rhel-7"
 }
