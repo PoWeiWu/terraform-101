@@ -29,54 +29,54 @@ resource "google_compute_subnetwork" "tf_subnet" {
   }
 }
 
-resource "google_compute_firewall" "ping" {
-  name    = "ping"
-  network = google_compute_network.tf_vpc.id
+# resource "google_compute_firewall" "ping" {
+#   name    = "ping"
+#   network = google_compute_network.tf_vpc.id
 
-  allow {
-    protocol = "icmp"
-  }
+#   allow {
+#     protocol = "icmp"
+#   }
 
-  source_ranges = ["0.0.0.0/0"]
-}
+#   source_ranges = ["0.0.0.0/0"]
+# }
 
-resource "google_compute_firewall" "ssh" {
-  name    = "allow-ssh"
-  network = google_compute_network.tf_vpc.id
+# resource "google_compute_firewall" "ssh" {
+#   name    = "allow-ssh"
+#   network = google_compute_network.tf_vpc.id
 
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
+#   allow {
+#     protocol = "tcp"
+#     ports    = ["22"]
+#   }
 
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["ssh"]
-}
-#create a gce vm
-resource "google_compute_instance" "gce" {
-  name         = "my-vm"
-  machine_type = "e2-medium"
-  zone         = "asia-east1-a"
+#   source_ranges = ["0.0.0.0/0"]
+#   target_tags   = ["ssh"]
+# }
 
-  boot_disk {
-    initialize_params {
-      # image = "rhel-cloud/rhel-7"
-      image = data.google_compute_image.my_image.self_link
-    }
-  }
-  network_interface {
-    network    = google_compute_network.tf_vpc.id
-    subnetwork = google_compute_subnetwork.tf_subnet.id
+# #create a gce vm
+# resource "google_compute_instance" "gce" {
+#   name         = "my-vm"
+#   machine_type = "e2-medium"
+#   zone         = "asia-east1-a"
 
-    access_config {
-      // Ephemeral public IP
-    }
-  }
+#   boot_disk {
+#     initialize_params {
+#       # image = "rhel-cloud/rhel-7"
+#       image = data.google_compute_image.my_image.self_link
+#     }
+#   }
+#   network_interface {
+#     network    = google_compute_network.tf_vpc.id
+#     subnetwork = google_compute_subnetwork.tf_subnet.id
 
-  tags = [ "ssh" ]
+#     access_config {
+#       // Ephemeral public IP
+#     }
+#   }
 
-}
+#   tags = ["ssh"]
+# }
 
-output "public_ip" {
-  value = google_compute_instance.gce.network_interface[0].access_config[0].nat_ip
-}
+# output "public_ip" {
+#   value = google_compute_instance.gce.network_interface[0].access_config[0].nat_ip
+# }
