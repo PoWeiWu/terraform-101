@@ -1,3 +1,10 @@
+# Try terraform command
+# 1. terraform init
+# 2. terraform fmt
+# 3. terraform validate
+# 4. terraform plan
+# 5. terraform apply [-auto-approve]
+# 6. terraform destory [-auto-approve]
 provider "google" {
   credentials = file("../_credential/google.json")
   project     = "tf-lab-life"
