@@ -1,3 +1,6 @@
+# Use remote-exec to deploy a demo web
+# Need to create ssh-key pair.
+
 data "google_compute_image" "my_image" {
   family  = "rhel-7"
   project = "rhel-cloud"
@@ -85,13 +88,16 @@ resource "google_compute_instance" "gce" {
   tags = ["ssh", "web"]
 
   depends_on = [
-    google_compute_firewall.ssh
+    google_compute_firewall.ssh,
+    google_compute_firewall.ping
   ]
 
+  # set ssh-key use your own public key
   metadata = {
     ssh-keys = "paul_wu:${file("~/.ssh/id_rsa.pub")}"
   }
 
+# Use inline script to deploy a demo web
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y install httpd",
@@ -102,6 +108,7 @@ resource "google_compute_instance" "gce" {
       "sudo chmod -R 755 /var/www/html/"
     ]
 
+# connect gce with your own private key
     connection {
       type        = "ssh"
       user        = "paul_wu"

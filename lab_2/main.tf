@@ -33,3 +33,29 @@ resource "google_compute_instance" "gce" {
 
   tags = [ "ssh" , "web"]
 }
+
+# Try delete config in tf file.
+# And delete resource on gcp, then apply again
+# check what will happen.
+
+# resource "google_compute_instance" "gce_2" {
+#   name         = "my-vm-2"
+#   machine_type = "e2-medium"
+#   zone         = "asia-east1-a"
+
+#   boot_disk {
+#     initialize_params {
+#       image = "rhel-cloud/rhel-7"
+#       # image = data.google_compute_image.my_image.self_link
+#     }
+#   }
+#   network_interface {
+#     network = "default"
+
+#     access_config {
+#       // Ephemeral public IP
+#     }
+#   }
+
+#   tags = [ "ssh" , "web"]
+# }
