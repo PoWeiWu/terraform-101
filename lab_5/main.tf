@@ -19,11 +19,18 @@ module "network" {
     subnet_name   = "my-subnet-01"
     subnet_ip     = "10.10.10.0/24"
     subnet_region = "asia-east1"
-  }]
+    },
+    {
+      subnet_name   = "my-subnet-02"
+      subnet_ip     = "10.10.20.0/24"
+      subnet_region = "asia-east1"
+    },
+  ]
 }
 
 module "my_vm" {
   source        = "./modules/gce"
+  project_id    = "tf-lab-life"
   instance_name = "my-vm"
   zone          = "asia-east1-a"
   network       = module.network.network_id

@@ -1,6 +1,5 @@
 variable "project_id" {
   description = "GCP project ID"
-  default     = "tf-lab-life"
 }
 
 variable "zone" {
